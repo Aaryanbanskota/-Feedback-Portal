@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback Portal | Aaryan's Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Space Grotesk', 'sans-serif'],
+          },
+          colors: {
+            primary: {
+              400: '#9e7bff',
+              500: '#8a4fff',
+              600: '#7a3aff',
+              700: '#6a25ff',
+            },
+            dark: {
+              700: '#1e293b',
+              800: '#1e293b',
+              900: '#0f172a',
+            },
+            purple: {
+              950: '#1e0b42'
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'fade-in': 'fadeIn 1s ease-out forwards',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'gradient-x': 'gradientX 8s ease infinite',
+            'bounce-slow': 'bounce 2s infinite'
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            gradientX: {
+              '0%, 100%': { 'background-position': '0% 50%' },
+              '50%': { 'background-position': '100% 50%' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8a4fff;
+    }
+
+    /* Gradient text */
+    .text-gradient {
+      background: linear-gradient(90deg, #8a4fff, #b366ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Glow effect */
+    .glow-effect {
+      box-shadow: 0 0 15px rgba(138, 79, 255, 0.3);
+      transition: box-shadow 0.3s ease;
+    }
+    .glow-effect:hover {
+      box-shadow: 0 0 25px rgba(138, 79, 255, 0.5);
+    }
+
+    /* Animated gradient border */
+    .gradient-border {
+      position: relative;
+      border-radius: 0.75rem;
+    }
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      z-index: -1;
+      border-radius: 0.75rem;
+      background: linear-gradient(90deg, #8a4fff, #b366ff, #8a4fff);
+      background-size: 200% 200%;
+      animation: gradientX 4s ease infinite;
+    }
+
+    /* Particle background */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      background: rgba(138, 79, 255, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Screenshot annotation */
+    .annotation-tool {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 10;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      gap: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    .annotation-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      background: rgba(138, 79, 255, 0.2);
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .annotation-btn:hover {
+      background: rgba(138, 79, 255, 0.5);
+    }
+    .annotation-btn.active {
+      background: #8a4fff;
+    }
+
+    /* Custom checkbox */
+    .custom-checkbox {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      appearance: none;
+      -webkit-appearance: none;
+      background: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .custom-checkbox:checked {
+      background: #8a4fff;
+      border-color: #8a4fff;
+    }
+    .custom-checkbox:checked::after {
+      content: '\f00c';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      color: white;
+      font-size: 12px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Custom radio buttons */
+    .custom-radio {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      appearance: none;
+      -webkit-appearance: none;
+      background: #1e293b;
+      border: 2px solid #334155;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .custom-radio:checked {
+      background: #8a4fff;
+      border-color: #8a4fff;
+    }
+    .custom-radio:checked::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* Gradient animation */
+    @keyframes gradientX {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+  </style>
+</head>
+<body class="bg-dark-900 text-gray-200 font-sans antialiased">
+
+  <!-- Particle Background -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Feedback Container -->
+  <div class="min-h-screen flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-4xl bg-gradient-to-br from-dark-900 to-purple-950 rounded-xl border border-dark-700 overflow-hidden shadow-2xl gradient-border">
+      <div class="p-8 sm:p-10">
+        <!-- Header with Logo -->
+        <div class="flex justify-center mb-6">
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-r from-primary-500 to-purple-600 flex items-center justify-center mr-3">
+              <i class="fas fa-comment-dots text-white"></i>
+            </div>
+            <span class="text-2xl font-bold font-heading text-gradient">Feedback Portal</span>
+          </div>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="flex justify-between mb-8 relative">
+          <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-dark-700 -z-10"></div>
+          <div id="progressBar" class="absolute top-1/2 left-0 h-0.5 bg-primary-500 -z-10 transition-all duration-300" style="width: 25%"></div>
+          
+          <div class="step flex flex-col items-center" data-step="1">
+            <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center text-white font-medium mb-2 shadow-lg glow-effect">1</div>
+            <span class="text-xs text-gray-400">Details</span>
+          </div>
+          <div class="step flex flex-col items-center" data-step="2">
+            <div class="w-8 h-8 rounded-full bg-dark-700 border-2 border-dark-600 flex items-center justify-center text-gray-400 font-medium mb-2">2</div>
+            <span class="text-xs text-gray-400">Feedback</span>
+          </div>
+          <div class="step flex flex-col items-center" data-step="3">
+            <div class="w-8 h-8 rounded-full bg-dark-700 border-2 border-dark-600 flex items-center justify-center text-gray-400 font-medium mb-2">3</div>
+            <span class="text-xs text-gray-400">Screenshot</span>
+          </div>
+          <div class="step flex flex-col items-center" data-step="4">
+            <div class="w-8 h-8 rounded-full bg-dark-700 border-2 border-dark-600 flex items-center justify-center text-gray-400 font-medium mb-2">4</div>
+            <span class="text-xs text-gray-400">Review</span>
+          </div>
+        </div>
+
+        <!-- Step 1: Basic Info -->
+        <div id="step1" class="step-content animate-fade-in">
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold font-heading text-gradient mb-2">Tell Us About Yourself</h2>
+            <p class="text-gray-400">We'd love to know who's providing this valuable feedback</p>
+          </div>
+
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label for="name" class="block text-sm font-medium mb-2 flex items-center">
+                  <span>Your Name</span>
+                  <span class="text-red-500 ml-1">*</span>
+                </label>
+                <input type="text" id="name" class="w-full px-4 py-3 bg-dark-800 border border-dark-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" placeholder="John Doe" required>
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-medium mb-2 flex items-center">
+                  <span>Email Address</span>
+                  <span class="text-red-500 ml-1">*</span>
+                </label>
+                <input type="email" id="email" class="w-full px-4 py-3 bg-dark-800 border border-dark-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" placeholder="you@example.com" required>
+              </div>
+            </div>
+
+            <div>
+              <label for="role" class="block text-sm font-medium mb-2">Your Role</label>
+              <select id="role" class="w-full px-4 py-3 bg-dark-800 border border-dark-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all appearance-none">
+                <option value="">Select your role</option>
+                <option value="client">Client</option>
+                <option value="colleague">Colleague</option>
+                <option value="user">User</option>
+                <option value="student">Student</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="pt-4">
+              <label class="block text-sm font-medium mb-3">How did you hear about me?</label>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="radio" name="referral" value="search" class="custom-radio">
+                  <span>Search Engine</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="radio" name="referral" value="social" class="custom-radio">
+                  <span>Social Media</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="radio" name="referral" value="friend" class="custom-radio">
+                  <span>Friend</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="radio" name="referral" value="portfolio" class="custom-radio">
+                  <span>My Portfolio</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer">
+                  <input type="radio" name="referral" value="other" class="custom-radio">
+                  <span>Other</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="flex justify-end pt-4">
+              <button type="button" class="next-step bg-gradient-to-r from-primary-500 to-purple-600 hover:from-primary-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg shadow-lg transition-all font-medium glow-effect flex items-center group" data-next="2">
+                Continue <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Feedback Details -->
+        <div id="step2" class="step-content hidden animate-fade-in">
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold font-heading text-gradient mb-2">Share Your Feedback</h2>
+            <p class="text-gray-400">Your honest feedback helps me create better experiences</p>
+          </div>
+
+          <div class="space-y-6">
+            <div>
+              <label for="feedbackType" class="block text-sm font-medium mb-2 flex items-center">
+                <span>Feedback Type</span>
+                <span class="text-red-500 ml-1">*</span>
+              </label>
+              <select id="feedbackType" class="w-full px-4 py-3 bg-dark-800 border border-dark-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all appearance-none" required>
+                <option value="">Select feedback type</option>
+                <option value="bug">Bug Report</option>
+                <option value="suggestion">Suggestion</option>
+                <option value="compliment">Compliment</option>
+                <option value="criticism">Constructive Criticism</option>
+                <option value="question">Question</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="message" class="block text-sm font-medium mb-2 flex items-center">
+                <span>Your Feedback</span>
+                <span class="text-red-500 ml-1">*</span>
+              </label>
+              <textarea id="message" rows="5" class="w-full px-4 py-3 bg-dark-800 border border-dark-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" placeholder="Please share your thoughts in detail..." required></textarea>
+              <p class="text-xs text-gray-500 mt-1">Minimum 30 characters</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium mb-2">How would you rate your experience?</label>
+              <div class="flex justify-center space-x-2" id="ratingStars">
+                <i class="fas fa-star text-3xl text-gray-500 cursor-pointer hover:text-yellow-400 transition-colors" data-rating="1" title="Poor"></i>
+                <i class="fas fa-star text-3xl text-gray-500 cursor-pointer hover:text-yellow-400 transition-colors" data-rating="2" title="Fair"></i>
+                <i class="fas fa-star text-3xl text-gray-500 cursor-pointer hover:text-yellow-400 transition-colors" data-rating="3" title="Good"></i>
+                <i class="fas fa-star text-3xl text-gray-500 cursor-pointer hover:text-yellow-400 transition-colors" data-rating="4" title="Very Good"></i>
+                <i class="fas fa-star text-3xl text-gray-500 cursor-pointer hover:text-yellow-400 transition-colors" data-rating="5" title="Excellent"></i>
+              </div>
+              <input type="hidden" id="ratingValue" value="0">
+              <div class="flex justify-between text-xs text-gray-500 mt-1">
+                <span>Not satisfied</span>
+                <span>Very satisfied</span>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <label class="block text-sm font-medium mb-2">What emotion describes your experience?</label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <label class="emotion-option flex flex-col items-center p-3 rounded-lg border border-dark-700 hover:border-primary-500 cursor-pointer transition-colors">
+                  <input type="radio" name="emotion" value="happy" class="hidden">
+                  <i class="fas fa-laugh-beam text-2xl text-yellow-400 mb-1"></i>
+                  <span>Happy</span>
+                </label>
+                <label class="emotion-option flex flex-col items-center p-3 rounded-lg border border-dark-700 hover:border-primary-500 cursor-pointer transition-colors">
+                  <input type="radio" name="emotion" value="neutral" class="hidden">
+                  <i class="fas fa-meh text-2xl text-gray-400 mb-1"></i>
+                  <span>Neutral</span>
+                </label>
+                <label class="emotion-option flex flex-col items-center p-3 rounded-lg border border-dark-700 hover:border-primary-500 cursor-pointer transition-colors">
+                  <input type="radio" name="emotion" value="frustrated" class="hidden">
+                  <i class="fas fa-angry text-2xl text-red-400 mb-1"></i>
+                  <span>Frustrated</span>
+                </label>
+                <label class="emotion-option flex flex-col items-center p-3 rounded-lg border border-dark-700 hover:border-primary-500 cursor-pointer transition-colors">
+                  <input type="radio" name="emotion" value="surprised" class="hidden">
+                  <i class="fas fa-surprise text-2xl text-blue-400 mb-1"></i>
+                  <span>Surprised</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="flex justify-between pt-4">
+              <button type="button" class="prev-step text-gray-400 hover:text-white px-6 py-3 rounded-lg transition-colors flex items-center group" data-prev="1">
+                <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> Back
+              </button>
+              <button type="button" class="next-step bg-gradient-to-r from-primary-500 to-purple-600 hover:from-primary-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg shadow-lg transition-all font-medium glow-effect flex items-center group" data-next="3">
+                Continue <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Screenshot & Annotation -->
+        <div id="step3" class="step-content hidden animate-fade-in">
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold font-heading text-gradient mb-2">Add Visual Context</h2>
+            <p class="text-gray-400">Upload a screenshot and highlight important areas (optional)</p>
+          </div>
+
+          <div class="space-y-6">
+            <div>
+              <label class="block text-sm font-medium mb-2">Screenshot</label>
+              <div class="border-2 border-dashed border-dark-700 rounded-lg p-8 text-center cursor-pointer hover:border-primary-500 transition-colors bg-dark-800/50" id="dropZone">
+                <div class="flex flex-col items-center justify-center space-y-2">
+                  <i class="fas fa-cloud-upload-alt text-4xl text-primary-500 mb-2 animate-bounce-slow"></i>
+                  <p class="text-gray-400">Drag & drop your screenshot here or click to browse</p>
+                  <p class="text-xs text-gray-500">Supports: JPG, PNG (Max 5MB)</p>
+                </div>
+                <input type="file" id="fileInput" class="hidden" accept="image/*">
+              </div>
+              <div id="previewContainer" class="mt-4 hidden relative">
+                <div class="annotation-tool">
+                  <button type="button" class="annotation-btn" data-tool="rectangle" title="Rectangle (R)">
+                    <i class="fas fa-square"></i>
+                  </button>
+                  <button type="button" class="annotation-btn" data-tool="arrow" title="Arrow (A)">
+                    <i class="fas fa-arrow-right"></i>
+                  </button>
+                  <button type="button" class="annotation-btn" data-tool="text" title="Add Text (T)">
+                    <i class="fas fa-font"></i>
+                  </button>
+                  <button type="button" class="annotation-btn" data-tool="blur" title="Blur Sensitive Info (B)">
+                    <i class="fas fa-eye-slash"></i>
+                  </button>
+                  <button type="button" class="annotation-btn" data-tool="undo" title="Undo (Ctrl+Z)">
+                    <i class="fas fa-undo"></i>
+                  </button>
+                </div>
+                <canvas id="annotationCanvas" class="max-w-full rounded-lg border border-dark-700 max-h-96 object-contain mx-auto bg-dark-900"></canvas>
+                <button type="button" id="removeImage" class="absolute top-2 right-2 bg-dark-800 hover:bg-red-500 text-white rounded-full p-2 transition-colors shadow-lg">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label for="additionalInfo" class="block text-sm font-medium mb-2">Additional Context</label>
+              <textarea id="additionalInfo" rows="3" class="w-full px-4 py-3 bg-dark-800 border border-dark-700 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" placeholder="Any additional details about your screenshot..."></textarea>
+            </div>
+
+            <div class="flex justify-between pt-4">
+              <button type="button" class="prev-step text-gray-400 hover:text-white px-6 py-3 rounded-lg transition-colors flex items-center group" data-prev="2">
+                <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> Back
+              </button>
+              <button type="button" class="next-step bg-gradient-to-r from-primary-500 to-purple-600 hover:from-primary-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg shadow-lg transition-all font-medium glow-effect flex items-center group" data-next="4">
+                Continue <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Review & Submit -->
+        <div id="step4" class="step-content hidden animate-fade-in">
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold font-heading text-gradient mb-2">Review Your Feedback</h2>
+            <p class="text-gray-400">Please verify everything looks correct before submitting</p>
+          </div>
+
+          <div class="space-y-6 bg-dark-800 rounded-xl p-6 mb-6 border border-dark-700">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h4 class="text-sm font-medium text-gray-400">Name</h4>
+                <p id="reviewName" class="text-white font-medium"></p>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-400">Email</h4>
+                <p id="reviewEmail" class="text-white font-medium"></p>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-400">Role</h4>
+                <p id="reviewRole" class="text-white font-medium"></p>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-400">Referral Source</h4>
+                <p id="reviewReferral" class="text-white font-medium"></p>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-400">Feedback Type</h4>
+                <p id="reviewType" class="text-white font-medium"></p>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-400">Emotion</h4>
+                <p id="reviewEmotion" class="text-white font-medium"></p>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-gray-400">Rating</h4>
+                <div id="reviewRating" class="text-yellow-400"></div>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-dark-700">
+              <h4 class="text-sm font-medium text-gray-400 mb-2">Your Feedback</h4>
+              <p id="reviewMessage" class="text-white whitespace-pre-line bg-dark-700 p-4 rounded-lg"></p>
+            </div>
+
+            <div id="reviewScreenshotContainer" class="hidden pt-4 border-t border-dark-700">
+              <h4 class="text-sm font-medium text-gray-400 mb-2">Screenshot</h4>
+              <img id="reviewScreenshot" class="max-w-full rounded-lg border border-dark-700 max-h-64 object-contain mx-auto">
+            </div>
+
+            <div id="reviewAdditionalInfoContainer" class="hidden pt-4 border-t border-dark-700">
+              <h4 class="text-sm font-medium text-gray-400 mb-2">Additional Context</h4>
+              <p id="reviewAdditionalInfo" class="text-white whitespace-pre-line bg-dark-700 p-4 rounded-lg"></p>
+            </div>
+          </div>
+
+          <div class="flex items-start mb-6">
+            <input type="checkbox" id="consent" class="custom-checkbox mt-1">
+            <label for="consent" class="ml-2 text-sm text-gray-400">
+              I consent to having my feedback and contact information stored for follow-up purposes. 
+              I understand that my annotated screenshot may be used to improve products and services.
+            </label>
+          </div>
+
+          <div class="flex items-start mb-6">
+            <input type="checkbox" id="newsletter" class="custom-checkbox mt-1">
+            <label for="newsletter" class="ml-2 text-sm text-gray-400">
+              I'd like to receive occasional updates about improvements and new features based on feedback like mine.
+            </label>
+          </div>
+
+          <div class="flex justify-between">
+            <button type="button" class="prev-step text-gray-400 hover:text-white px-6 py-3 rounded-lg transition-colors flex items-center group" data-prev="3">
+              <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> Back
+            </button>
+            <button type="submit" id="submitFeedback" class="bg-gradient-to-r from-primary-500 to-purple-600 hover:from-primary-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg shadow-lg transition-all font-medium glow-effect flex items-center justify-center">
+              <i class="fas fa-paper-plane mr-2"></i> Submit Feedback
+              <span id="submitSpinner" class="ml-2 hidden">
+                <i class="fas fa-spinner fa-spin"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="hidden text-center py-8 animate-fade-in">
+          <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-500/20 mb-6 animate-pulse-slow">
+            <i class="fas fa-check text-green-500 text-3xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-3">Thank You For Your Feedback!</h3>
+          <p class="text-gray-400 mb-6 max-w-md mx-auto">Your input is incredibly valuable and will help me improve. You'll be redirected to the thank you page shortly.</p>
+          
+          <div class="pt-4">
+            <div class="inline-flex items-center text-sm text-gray-500">
+              <i class="fas fa-spinner fa-spin mr-2"></i>
+              <span>Redirecting in <span id="countdown">5</span> seconds...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // DOM Elements
+      const steps = document.querySelectorAll('.step-content');
+      const stepButtons = document.querySelectorAll('.step');
+      const nextButtons = document.querySelectorAll('.next-step');
+      const prevButtons = document.querySelectorAll('.prev-step');
+      const progressBar = document.getElementById('progressBar');
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('fileInput');
+      const previewContainer = document.getElementById('previewContainer');
+      const annotationCanvas = document.getElementById('annotationCanvas');
+      const removeImage = document.getElementById('removeImage');
+      const ratingStars = document.getElementById('ratingStars').querySelectorAll('.fa-star');
+      const ratingValue = document.getElementById('ratingValue');
+      const submitButton = document.getElementById('submitFeedback');
+      const submitSpinner = document.getElementById('submitSpinner');
+      const successMessage = document.getElementById('successMessage');
+      
+      // Review elements
+      const reviewName = document.getElementById('reviewName');
+      const reviewEmail = document.getElementById('reviewEmail');
+      const reviewRole = document.getElementById('reviewRole');
+      const reviewReferral = document.getElementById('reviewReferral');
+      const reviewType = document.getElementById('reviewType');
+      const reviewEmotion = document.getElementById('reviewEmotion');
+      const reviewRating = document.getElementById('reviewRating');
+      const reviewMessage = document.getElementById('reviewMessage');
+      const reviewScreenshotContainer = document.getElementById('reviewScreenshotContainer');
+      const reviewScreenshot = document.getElementById('reviewScreenshot');
+      const reviewAdditionalInfoContainer = document.getElementById('reviewAdditionalInfoContainer');
+      const reviewAdditionalInfo = document.getElementById('reviewAdditionalInfo');
+      const countdownElement = document.getElementById('countdown');
+
+      // Annotation variables
+      let canvasCtx;
+      let isDrawing = false;
+      let lastX = 0;
+      let lastY = 0;
+      let currentTool = null;
+      let annotations = [];
+      let currentAnnotation = null;
+      let canvasImage = null;
+
+      // Create particle background
+      function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = window.innerWidth < 768 ? 30 : 50;
+        
+        for (let i = 0; i < particleCount; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          
+          // Random size between 1px and 3px
+          const size = Math.random() * 2 + 1;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          
+          // Random position
+          particle.style.left = `${Math.random() * 100}%`;
+          particle.style.top = `${Math.random() * 100}%`;
+          
+          // Random animation
+          const duration = Math.random() * 20 + 10;
+          const delay = Math.random() * 5;
+          particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+          
+          // Random opacity
+          particle.style.opacity = Math.random() * 0.5 + 0.1;
+          
+          particlesContainer.appendChild(particle);
+        }
+      }
+
+      // Initialize canvas
+      function initCanvas() {
+        if (annotationCanvas) {
+          canvasCtx = annotationCanvas.getContext('2d');
+          annotationCanvas.width = annotationCanvas.offsetWidth;
+          annotationCanvas.height = annotationCanvas.offsetHeight;
+          canvasCtx.fillStyle = '#0f172a';
+          canvasCtx.fillRect(0, 0, annotationCanvas.width, annotationCanvas.height);
+        }
+      }
+
+      // Step navigation
+      function showStep(stepNumber) {
+        steps.forEach(step => step.classList.add('hidden'));
+        document.getElementById(`step${stepNumber}`).classList.remove('hidden');
+        
+        // Update progress bar
+        const progressPercentage = (stepNumber - 1) * (100 / (steps.length - 1));
+        progressBar.style.width = `${progressPercentage}%`;
+        
+        // Update step indicators
+        stepButtons.forEach((button, index) => {
+          const step = index + 1;
+          const circle = button.querySelector('div');
+          if (step < stepNumber) {
+            circle.classList.remove('bg-dark-700', 'border-dark-600', 'text-gray-400');
+            circle.classList.add('bg-primary-500', 'text-white');
+          } else if (step === stepNumber) {
+            circle.classList.remove('bg-dark-700', 'text-gray-400');
+            circle.classList.add('bg-primary-500', 'text-white', 'border-primary-500');
+          } else {
+            circle.classList.remove('bg-primary-500', 'text-white');
+            circle.classList.add('bg-dark-700', 'border-dark-600', 'text-gray-400');
+          }
+        });
+
+        // Reset animation for the current step
+        const currentStep = document.getElementById(`step${stepNumber}`);
+        currentStep.style.animation = 'none';
+        void currentStep.offsetWidth; // Trigger reflow
+        currentStep.style.animation = 'fadeIn 0.5s ease-out forwards';
+      }
+
+      nextButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const nextStep = this.getAttribute('data-next');
+          if (validateStep(parseInt(nextStep) - 1)) {
+            showStep(nextStep);
+            
+            // If going to review step, update the review content
+            if (nextStep === '4') {
+              updateReviewContent();
+            }
+          }
+        });
+      });
+
+      prevButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const prevStep = this.getAttribute('data-prev');
+          showStep(prevStep);
+        });
+      });
+
+      // Form validation for each step
+      function validateStep(stepNumber) {
+        let isValid = true;
+        
+        if (stepNumber === 1) {
+          const name = document.getElementById('name').value.trim();
+          const email = document.getElementById('email').value.trim();
+          
+          if (!name) {
+            alert('Please enter your name');
+            isValid = false;
+          } else if (!email) {
+            alert('Please enter your email address');
+            isValid = false;
+          } else if (!/\S+@\S+\.\S+/.test(email)) {
+            alert('Please enter a valid email address');
+            isValid = false;
+          }
+        } else if (stepNumber === 2) {
+          const feedbackType = document.getElementById('feedbackType').value;
+          const message = document.getElementById('message').value.trim();
+          
+          if (!feedbackType) {
+            alert('Please select a feedback type');
+            isValid = false;
+          } else if (!message || message.length < 30) {
+            alert('Please enter your feedback message (minimum 30 characters)');
+            isValid = false;
+          }
+        }
+        
+        return isValid;
+      }
+
+      // Emotion selection
+      document.querySelectorAll('.emotion-option').forEach(option => {
+        option.addEventListener('click', function() {
+          document.querySelectorAll('.emotion-option').forEach(opt => {
+            opt.classList.remove('border-primary-500', 'bg-dark-700');
+          });
+          this.classList.add('border-primary-500', 'bg-dark-700');
+          const input = this.querySelector('input');
+          input.checked = true;
+        });
+      });
+
+      // Rating system
+      ratingStars.forEach(star => {
+        star.addEventListener('click', function() {
+          const rating = parseInt(this.getAttribute('data-rating'));
+          ratingValue.value = rating;
+          
+          ratingStars.forEach((s, index) => {
+            if (index < rating) {
+              s.classList.add('text-yellow-400');
+              s.classList.remove('text-gray-500');
+            } else {
+              s.classList.add('text-gray-500');
+              s.classList.remove('text-yellow-400');
+            }
+          });
+        });
+
+        star.addEventListener('mouseover', function() {
+          const rating = parseInt(this.getAttribute('data-rating'));
+          ratingStars.forEach((s, index) => {
+            if (index < rating) {
+              s.classList.add('text-yellow-400');
+              s.classList.remove('text-gray-500');
+            }
+          });
+        });
+
+        star.addEventListener('mouseout', function() {
+          const currentRating = parseInt(ratingValue.value);
+          ratingStars.forEach((s, index) => {
+            if (index >= currentRating) {
+              s.classList.add('text-gray-500');
+              s.classList.remove('text-yellow-400');
+            }
+          });
+        });
+      });
+
+      // Keyboard shortcuts for annotation tools
+      document.addEventListener('keydown', function(e) {
+        if (!previewContainer.classList.contains('hidden')) {
+          if (e.ctrlKey && e.key === 'z') {
+            if (annotations.length > 0) {
+              annotations.pop();
+              redrawCanvas();
+            }
+            return;
+          }
+
+          switch (e.key.toLowerCase()) {
+            case 'r':
+              setActiveTool('rectangle');
+              break;
+            case 'a':
+              setActiveTool('arrow');
+              break;
+            case 't':
+              setActiveTool('text');
+              break;
+            case 'b':
+              setActiveTool('blur');
+              break;
+          }
+        }
+      });
+
+      function setActiveTool(tool) {
+        currentTool = tool;
+        document.querySelectorAll('.annotation-btn').forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.getAttribute('data-tool') === tool) {
+            btn.classList.add('active');
+          }
+        });
+      }
+
+      // Screenshot upload with drag and drop
+      dropZone.addEventListener('click', () => fileInput.click());
+      
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+      });
+
+      function highlight() {
+        dropZone.classList.add('border-primary-500', 'bg-dark-700');
+      }
+
+      function unhighlight() {
+        dropZone.classList.remove('border-primary-500', 'bg-dark-700');
+      }
+
+      dropZone.addEventListener('drop', handleDrop, false);
+
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        if (files.length) {
+          fileInput.files = files;
+          handleFiles(files);
+        }
+      }
+
+      fileInput.addEventListener('change', function() {
+        if (this.files.length) {
+          handleFiles(this.files);
+        }
+      });
+
+      function handleFiles(files) {
+        const file = files[0];
+        if (file.type.match('image.*')) {
+          if (file.size > 5 * 1024 * 1024) {
+            alert('File size should be less than 5MB');
+            return;
+          }
+          
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+              // Calculate dimensions to maintain aspect ratio
+              const maxWidth = 800;
+              const maxHeight = 600;
+              let width = img.width;
+              let height = img.height;
+              
+              if (width > maxWidth) {
+                height = (maxWidth / width) * height;
+                width = maxWidth;
+              }
+              
+              if (height > maxHeight) {
+                width = (maxHeight / height) * width;
+                height = maxHeight;
+              }
+              
+              annotationCanvas.width = width;
+              annotationCanvas.height = height;
+              canvasCtx.drawImage(img, 0, 0, width, height);
+              canvasImage = img;
+              previewContainer.classList.remove('hidden');
+              
+              // Store original image data
+              annotations = [];
+            };
+            img.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        } else {
+          alert('Please select an image file (JPG, PNG)');
+        }
+      }
+
+      removeImage.addEventListener('click', function() {
+        canvasCtx.clearRect(0, 0, annotationCanvas.width, annotationCanvas.height);
+        previewContainer.classList.add('hidden');
+        fileInput.value = '';
+        annotations = [];
+        canvasImage = null;
+      });
+
+      // Annotation tools
+      document.querySelectorAll('.annotation-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const tool = this.getAttribute('data-tool');
+          
+          if (tool === 'undo') {
+            if (annotations.length > 0) {
+              annotations.pop();
+              redrawCanvas();
+            }
+            return;
+          }
+          
+          document.querySelectorAll('.annotation-btn').forEach(b => b.classList.remove('active'));
+          if (currentTool === tool) {
+            currentTool = null;
+          } else {
+            currentTool = tool;
+            this.classList.add('active');
+          }
+        });
+      });
+
+      // Canvas drawing events
+      annotationCanvas.addEventListener('mousedown', startDrawing);
+      annotationCanvas.addEventListener('mousemove', draw);
+      annotationCanvas.addEventListener('mouseup', stopDrawing);
+      annotationCanvas.addEventListener('mouseout', stopDrawing);
+
+      function startDrawing(e) {
+        if (!currentTool) return;
+        
+        isDrawing = true;
+        const rect = annotationCanvas.getBoundingClientRect();
+        lastX = e.clientX - rect.left;
+        lastY = e.clientY - rect.top;
+        
+        currentAnnotation = {
+          tool: currentTool,
+          points: [{x: lastX, y: lastY}],
+          color: '#8a4fff',
+          text: currentTool === 'text' ? prompt('Enter your text:', '') : null,
+          fontSize: 16
+        };
+      }
+
+      function draw(e) {
+        if (!isDrawing || !currentTool) return;
+        
+        const rect = annotationCanvas.getBoundingClientRect();
+        const currentX = e.clientX - rect.left;
+        const currentY = e.clientY - rect.top;
+        
+        if (currentTool === 'rectangle' || currentTool === 'arrow' || currentTool === 'blur') {
+          // For shapes, we just update the end point
+          if (currentAnnotation.points.length > 1) {
+            currentAnnotation.points.pop();
+          }
+          currentAnnotation.points.push({x: currentX, y: currentY});
+        } else if (currentTool === 'freehand') {
+          currentAnnotation.points.push({x: currentX, y: currentY});
+        }
+        
+        redrawCanvas();
+      }
+
+      function stopDrawing() {
+        if (!isDrawing) return;
+        
+        isDrawing = false;
+        if (currentAnnotation && 
+            (currentAnnotation.points.length > 1 || currentAnnotation.text)) {
+          annotations.push(currentAnnotation);
+        }
+        currentAnnotation = null;
+      }
+
+      function redrawCanvas() {
+        // Clear canvas
+        canvasCtx.clearRect(0, 0, annotationCanvas.width, annotationCanvas.height);
+        
+        // Redraw original image
+        if (canvasImage) {
+          canvasCtx.drawImage(canvasImage, 0, 0, annotationCanvas.width, annotationCanvas.height);
+        } else {
+          canvasCtx.fillStyle = '#0f172a';
+          canvasCtx.fillRect(0, 0, annotationCanvas.width, annotationCanvas.height);
+        }
+        
+        // Redraw all annotations
+        annotations.forEach(annotation => {
+          drawAnnotation(annotation);
+        });
+        
+        // Draw current annotation (if any)
+        if (currentAnnotation) {
+          drawAnnotation(currentAnnotation);
+        }
+      }
+
+      function drawAnnotation(annotation) {
+        canvasCtx.strokeStyle = annotation.color;
+        canvasCtx.fillStyle = annotation.color;
+        canvasCtx.lineWidth = 2;
+        canvasCtx.lineJoin = 'round';
+        canvasCtx.lineCap = 'round';
+        
+        if (annotation.tool === 'rectangle') {
+          const start = annotation.points[0];
+          const end = annotation.points[annotation.points.length - 1];
+          const width = end.x - start.x;
+          const height = end.y - start.y;
+          
+          canvasCtx.strokeRect(start.x, start.y, width, height);
+        } else if (annotation.tool === 'arrow') {
+          const start = annotation.points[0];
+          const end = annotation.points[annotation.points.length - 1];
+          
+          // Draw arrow line
+          canvasCtx.beginPath();
+          canvasCtx.moveTo(start.x, start.y);
+          canvasCtx.lineTo(end.x, end.y);
+          canvasCtx.stroke();
+          
+          // Draw arrow head
+          const headLength = 15;
+          const angle = Math.atan2(end.y - start.y, end.x - start.x);
+          canvasCtx.beginPath();
+          canvasCtx.moveTo(end.x, end.y);
+          canvasCtx.lineTo(
+            end.x - headLength * Math.cos(angle - Math.PI / 6),
+            end.y - headLength * Math.sin(angle - Math.PI / 6)
+          );
+          canvasCtx.lineTo(
+            end.x - headLength * Math.cos(angle + Math.PI / 6),
+            end.y - headLength * Math.sin(angle + Math.PI / 6)
+          );
+          canvasCtx.closePath();
+          canvasCtx.fill();
+        } else if (annotation.tool === 'text' && annotation.text) {
+          canvasCtx.font = `${annotation.fontSize}px Inter`;
+          canvasCtx.fillText(annotation.text, annotation.points[0].x, annotation.points[0].y);
+        } else if (annotation.tool === 'blur') {
+          const start = annotation.points[0];
+          const end = annotation.points[annotation.points.length - 1];
+          const width = end.x - start.x;
+          const height = end.y - start.y;
+          
+          // Create a temporary canvas for blur effect
+          const tempCanvas = document.createElement('canvas');
+          const tempCtx = tempCanvas.getContext('2d');
+          tempCanvas.width = Math.abs(width);
+          tempCanvas.height = Math.abs(height);
+          
+          // Draw the area to blur on temp canvas
+          tempCtx.drawImage(
+            annotationCanvas, 
+            Math.min(start.x, end.x), 
+            Math.min(start.y, end.y), 
+            Math.abs(width), 
+            Math.abs(height), 
+            0, 
+            0, 
+            Math.abs(width), 
+            Math.abs(height)
+          );
+          
+          // Apply blur (simple pixelation for demo)
+          const size = 10;
+          tempCtx.drawImage(
+            tempCanvas, 
+            0, 0, Math.abs(width), Math.abs(height),
+            0, 0, Math.abs(width)/size, Math.abs(height)/size
+          );
+          tempCtx.drawImage(
+            tempCanvas, 
+            0, 0, Math.abs(width)/size, Math.abs(height)/size,
+            0, 0, Math.abs(width), Math.abs(height)
+          );
+          
+          // Draw the blurred area back
+          canvasCtx.drawImage(
+            tempCanvas, 
+            0, 0, Math.abs(width), Math.abs(height),
+            Math.min(start.x, end.x), 
+            Math.min(start.y, end.y), 
+            Math.abs(width), 
+            Math.abs(height)
+          );
+        } else if (annotation.tool === 'freehand') {
+          canvasCtx.beginPath();
+          canvasCtx.moveTo(annotation.points[0].x, annotation.points[0].y);
+          for (let i = 1; i < annotation.points.length; i++) {
+            canvasCtx.lineTo(annotation.points[i].x, annotation.points[i].y);
+          }
+          canvasCtx.stroke();
+        }
+      }
+
+      // Update review content before submission
+      function updateReviewContent() {
+        reviewName.textContent = document.getElementById('name').value.trim() || 'Not provided';
+        reviewEmail.textContent = document.getElementById('email').value.trim() || 'Not provided';
+        
+        const role = document.getElementById('role').value;
+        reviewRole.textContent = role ? document.getElementById('role').options[document.getElementById('role').selectedIndex].text : 'Not specified';
+        
+        const referral = document.querySelector('input[name="referral"]:checked');
+        reviewReferral.textContent = referral ? referral.parentElement.textContent.trim() : 'Not specified';
+        
+        const feedbackType = document.getElementById('feedbackType').value;
+        reviewType.textContent = feedbackType ? document.getElementById('feedbackType').options[document.getElementById('feedbackType').selectedIndex].text : 'Not specified';
+        
+        const emotion = document.querySelector('input[name="emotion"]:checked');
+        if (emotion) {
+          reviewEmotion.innerHTML = emotion.value === 'happy' ? '<i class="fas fa-laugh-beam text-yellow-400 mr-1"></i> Happy' :
+                               emotion.value === 'neutral' ? '<i class="fas fa-meh text-gray-400 mr-1"></i> Neutral' :
+                               emotion.value === 'frustrated' ? '<i class="fas fa-angry text-red-400 mr-1"></i> Frustrated' :
+                               '<i class="fas fa-surprise text-blue-400 mr-1"></i> Surprised';
+        } else {
+          reviewEmotion.textContent = 'Not specified';
+        }
+        
+        const rating = ratingValue.value;
+        if (rating !== '0') {
+          reviewRating.innerHTML = '';
+          for (let i = 0; i < 5; i++) {
+            const star = document.createElement('i');
+            star.className = `fas fa-star text-xl ${i < rating ? 'text-yellow-400' : 'text-gray-500'}`;
+            reviewRating.appendChild(star);
+          }
+          reviewRating.innerHTML += ` <span class="text-white ml-2">${rating}/5</span>`;
+        } else {
+          reviewRating.textContent = 'Not rated';
+        }
+        
+        reviewMessage.textContent = document.getElementById('message').value.trim() || 'Not provided';
+        
+        const additionalInfo = document.getElementById('additionalInfo').value.trim();
+        if (additionalInfo) {
+          reviewAdditionalInfo.textContent = additionalInfo;
+          reviewAdditionalInfoContainer.classList.remove('hidden');
+        } else {
+          reviewAdditionalInfoContainer.classList.add('hidden');
+        }
+        
+        if (fileInput.files.length > 0) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            reviewScreenshot.src = e.target.result;
+            reviewScreenshotContainer.classList.remove('hidden');
+          };
+          reader.readAsDataURL(fileInput.files[0]);
+        } else {
+          reviewScreenshotContainer.classList.add('hidden');
+        }
+      }
+
+      // Form submission
+      submitButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        if (!document.getElementById('consent').checked) {
+          alert('Please consent to having your feedback stored');
+          return;
+        }
+        
+        submitSpinner.classList.remove('hidden');
+        submitButton.disabled = true;
+        
+        // In a real implementation, you would send this data to your server
+        // For demo purposes, we'll simulate an API call
+        setTimeout(() => {
+          // Using FormSubmit.co for free email forwarding
+          const formData = new FormData();
+          formData.append('name', document.getElementById('name').value);
+          formData.append('email', document.getElementById('email').value);
+          formData.append('role', document.getElementById('role').value);
+          
+          const referral = document.querySelector('input[name="referral"]:checked');
+          formData.append('referral', referral ? referral.value : '');
+          
+          formData.append('feedbackType', document.getElementById('feedbackType').value);
+          
+          const emotion = document.querySelector('input[name="emotion"]:checked');
+          formData.append('emotion', emotion ? emotion.value : '');
+          
+          formData.append('message', document.getElementById('message').value);
+          formData.append('rating', ratingValue.value);
+          formData.append('additionalInfo', document.getElementById('additionalInfo').value);
+          formData.append('newsletterConsent', document.getElementById('newsletter').checked ? 'yes' : 'no');
+          
+          if (fileInput.files.length > 0) {
+            // Convert canvas to blob and add to form data
+            annotationCanvas.toBlob(function(blob) {
+              formData.append('screenshot', blob, 'screenshot.png');
+              sendFormData(formData);
+            }, 'image/png');
+          } else {
+            sendFormData(formData);
+          }
+        }, 1000);
+      });
+
+      function sendFormData(formData) {
+        // Using your email mortaldemon33@gmail.com
+        fetch('https://formsubmit.co/ajax/mortaldemon33@gmail.com', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Show success message
+          document.getElementById('step4').classList.add('hidden');
+          successMessage.classList.remove('hidden');
+          
+          // Start countdown for redirection
+          let countdown = 5;
+          countdownElement.textContent = countdown;
+          
+          const countdownInterval = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+            
+            if (countdown <= 0) {
+              clearInterval(countdownInterval);
+              window.location.href = 'https://aaryanbanskota.github.io/thank-you-page-for-all-my-work/';
+            }
+          }, 1000);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('There was an error submitting your feedback. Please try again.');
+        })
+        .finally(() => {
+          submitSpinner.classList.add('hidden');
+          submitButton.disabled = false;
+        });
+      }
+
+      // Initialize
+      createParticles();
+      initCanvas();
+      showStep(1);
+    });
+  </script>
+</body>
+</html>
