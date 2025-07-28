@@ -88,8 +88,7 @@
 
 > View the live version right now:
 
-🔗 **[FeadBlank Portal on GitHub Pages](https://aaryanbanskota.github.io/feadblank-portal/)**  
-*(URL will reflect your repo name; update it if different)*
+🔗 **[FeadBlank Portal on GitHub Pages](https://aaryanbanskota.github.io/-Feedback-Portal/)**  
 
 To deploy your own version:
 1. Push the code to a public GitHub repository.
